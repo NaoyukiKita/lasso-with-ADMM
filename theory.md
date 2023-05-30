@@ -8,7 +8,12 @@ $$
 {\rm Loss}({\bf w}) = \frac{1}{2} {||{\bf y} - {\bf X}^{T}{\bf w}||}_{2}^{2} + \lambda {||{\bf w}||}_{1}
 $$
 
-, where ${||{\bf w}||}_{1}$ is L**1**-reguralization term, not L2.
+, where 
+${\bf x} = {(x_{1}, x_{2}, ..., x_{d})}^{{\rm T}} \in {\mathbb R}^{d}$, 
+${\bf X} = ({\bf x}_{1}, {\bf x}_{2}, ..., {\bf x}_{n}) \in {\mathbb R}^{d \times n}$, 
+${\bf w} = {(w_{1}, w_{2}, ..., w_{d})}^{{\rm T}} \in {\mathbb R}^{d}$, 
+${\bf y} \in {\mathbb R}^{n}$ and 
+${||{\bf w}||}_{1}$ is L**1**-reguralization term, not L2.
 
 Lasso regression adopts L1-regularization term to make as many elements of ${\bf w}$ as possible equal to zero, while Ridge regression uses L2 to reduce the norm of ${\bf w}$.
 
@@ -74,7 +79,10 @@ $$
 In this method, ${\bf w}, {\bf z}$ and ${\bf \gamma}$ are updated iteratively:
 
 $$
-{\bf w}^{(0)} = {\bf 0},\quad {\bf z}^{(0)} = {\bf 0},\quad {\bf \gamma}^{(0)} = {\bf 0} \\
+{\bf w}^{(0)} = {\bf 0},\quad {\bf z}^{(0)} = {\bf 0},\quad {\bf \gamma}^{(0)} = {\bf 0}
+$$
+
+$$
 \begin{align}
 {\bf w}^{(t+1)} &= \underset{\bf w}{{\rm argmin}} J({\bf w}^{(t)}, {\bf z}^{(t)}, {\bf \gamma}^{(t)}) \nonumber \\
 {\bf z}^{(t+1)} &= \underset{\bf z}{{\rm argmin}} J({\bf w}^{(t)}, {\bf z}^{(t)}, {\bf \gamma}^{(t)}) \nonumber \\
@@ -96,8 +104,10 @@ The primary condition is literally the constraint, while the secondary one wants
 Let us zoom at the rule of update. Like the original Lagrange multiplier, we determine ${\bf w}^{(t+1)}$ by partial derivatives:
 
 $$
-\frac{\partial J}{\partial {\bf w}} = -{\bf X}({\bf y} - {\bf X}^T {\bf w}^{(t)}) + {\bf \gamma}^{(t)} + {\bf \rho}({\bf w}^{(t)} - {\bf z}^{(t)}) = 0 \\
-\therefore{\bf w}^{(t+1)} = {({\bf X}{\bf X}^{T} + \rho {\bf I})}^{-1} ({\bf X}{\bf y} - {\bf \gamma}^{(t)} + \rho {\bf z}^{(t)})
+\begin{align}
+\frac{\partial J}{\partial {\bf w}} = -{\bf X}({\bf y} - {\bf X}^T {\bf w}^{(t)}) + {\bf \gamma}^{(t)} + {\bf \rho}({\bf w}^{(t)} - {\bf z}^{(t)}) &= 0 \nonumber \\
+\therefore{\bf w}^{(t+1)} &= {({\bf X}{\bf X}^{T} + \rho {\bf I})}^{-1} ({\bf X}{\bf y} - {\bf \gamma}^{(t)} + \rho {\bf z}^{(t)}) \nonumber \\
+\end{align}
 $$
 
 The function is non-differentiable with respect to ${\bf z}$ because of ${||{\bf z}||}_{1}$, but we can solve the problem analytically by dealing with each element of it. That is, we rewrite the function as:
@@ -196,7 +206,10 @@ $$
 and each parameter is updated incrementally under the update rule:
 
 $$
-{\bf w}^{(0)} = {\bf 0},\quad {\bf z}^{(0)} = {\bf 0},\quad {\bf \gamma}^{(0)} = {\bf 0} \\
+{\bf w}^{(0)} = {\bf 0},\quad {\bf z}^{(0)} = {\bf 0},\quad {\bf \gamma}^{(0)} = {\bf 0}
+$$
+
+$$
 \begin{align}
 {\bf w}^{(t+1)} &= {({\bf X}{\bf X}^{T} + \rho {\bf I})}^{-1} ({\bf X}{\bf y} - {\bf \gamma}^{(t)} + \rho {\bf z}^{(t)}) \nonumber \\
 {\hat z}^{(t+1)} &= S_{\frac{\lambda}{\rho}} (w^{(t)} + \frac{1}{\rho} {\gamma}) \nonumber \\
