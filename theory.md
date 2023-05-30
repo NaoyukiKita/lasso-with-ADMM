@@ -5,25 +5,25 @@
 In <span style="color: red; ">Lasso regression</span>, loss function is defined as follows:
 
 $$
-{\rm Loss}({\bm w}) = \frac{1}{2} {||{\bf y} - {\bm X}^{T}{\bm w}||}_{2}^{2} + \lambda {||{\bm w}||}_{1}
+{\rm Loss}({\bf w}) = \frac{1}{2} {||{\bf y} - {\bf X}^{T}{\bf w}||}_{2}^{2} + \lambda {||{\bf w}||}_{1}
 $$
 
-, where ${||{\bm w}||}_{1}$ is L**1**-reguralization term, not L2.
+, where ${||{\bf w}||}_{1}$ is L**1**-reguralization term, not L2.
 
 Lasso regression adopts L1-regularization term to make as many elements of ${\bf w}$ as possible equal to zero, while Ridge regression uses L2 to reduce the norm of ${\bf w}$.
 
-Lasso regression has no analytical solution, since it has both a diffetentiable term ${||{\bf y} - {\bm X}^{T}{\bm w}||}_{2}^{2}$ and a non-differentiable term $||{\bm w}||_{1}$ using the same parameter ${\bm w}$. Thus, we need to minimize the loss iteratively. One of the solution methods is <span style="color: red; ">ADMM (Alternating Direction Method of Multipliers)</span>.
+Lasso regression has no analytical solution, since it has both a diffetentiable term ${||{\bf y} - {\bf X}^{T}{\bf w}||}_{2}^{2}$ and a non-differentiable term $||{\bf w}||_{1}$ using the same parameter ${\bf w}$. Thus, we need to minimize the loss iteratively. One of the solution methods is <span style="color: red; ">ADMM (Alternating Direction Method of Multipliers)</span>.
 
 ## 2. Intorodusing ADMM
 
 In ADMM, we redefine the loss function as:
 
 $$
-{\rm Loss}({\bm w}, {\bm z}) = \frac{1}{2} {||{\bf y} - {\bm X}^{T}{\bm w}||}_{2}^{2} + \lambda {||{\bm z}||}_{1} \\
-{\rm s.t.}\quad{\bm w} = {\bm z}
+{\rm Loss}({\bf w}, {\bf z}) = \frac{1}{2} {||{\bf y} - {\bf X}^{T}{\bf w}||}_{2}^{2} + \lambda {||{\bf z}||}_{1} \\
+{\rm s.t.}\quad{\bf w} = {\bf z}
 $$
 
-The key idea here is to the main objective ${||{\bf y} - {\bm X}^{T}{\bm w}||}_{2}^{2}$ and the regularization term $\lambda {||{\bm z}||}_{1}$. Since these terms do not share the parameter ${\bf w}$ anymore, they can be evaluated by considering separate cases based on absolute values. However, if the constraint is satisfied strictly, the function is equivalent to the original one. Therefore, we need to impose it loosely.
+The key idea here is to the main objective ${||{\bf y} - {\bf X}^{T}{\bf w}||}_{2}^{2}$ and the regularization term $\lambda {||{\bf z}||}_{1}$. Since these terms do not share the parameter ${\bf w}$ anymore, they can be evaluated by considering separate cases based on absolute values. However, if the constraint is satisfied strictly, the function is equivalent to the original one. Therefore, we need to impose it loosely.
 
 ## 3. The Augmented Lagrangian Method
 
@@ -38,12 +38,12 @@ The well-known method for maximizing or minimizing the certain function under th
 
 $$
 \begin{align}
-{\mathcal L}({\bm x}, {\bm z}, {\bm {\gamma}}) &= {\rm Loss}({\bm w}, {\bm z}) + {\bm {\gamma}}^{T}({\bm w} - {\bm z}) \nonumber \\
- &= \frac{1}{2} {||{\bm y} - {\bm X}^{T}{\bm w}||}_{2}^{2} + \lambda {||{\bm z}||}_{1} + {\bm {\gamma}}^{T}({\bm w} - {\bm z}) \nonumber \\
+{\mathcal L}({\bf x}, {\bf z}, {\bf {\gamma}}) &= {\rm Loss}({\bf w}, {\bf z}) + {\bf {\gamma}}^{T}({\bf w} - {\bf z}) \nonumber \\
+ &= \frac{1}{2} {||{\bf y} - {\bf X}^{T}{\bf w}||}_{2}^{2} + \lambda {||{\bf z}||}_{1} + {\bf {\gamma}}^{T}({\bf w} - {\bf z}) \nonumber \\
 \end{align}
 $$
 
-where ${\gamma}^{T} \in {\mathbb R}^{d}$ is the Lagrange multipliers. Taking partial derivatives with respect to ${\bm x}, {\bm z}$ and ${\gamma}$ and setting them to zero, we can find the extremum of the function. This is what we want.
+where ${\gamma}^{T} \in {\mathbb R}^{d}$ is the Lagrange multipliers. Taking partial derivatives with respect to ${\bf x}, {\bf z}$ and ${\gamma}$ and setting them to zero, we can find the extremum of the function. This is what we want.
 
 This method is very straightforward, and the time to obtain a solution is short.　However, the constraint is satisfied strictly.
 
@@ -53,8 +53,8 @@ This method regards the constraint as the penalty, so to reduce the penalty help
 
 $$
 \begin{align}
-{\mathcal P}({\bm x}, {\bm z}, \rho) &= {\rm Loss}({\bm w}, {\bm z}) + \frac{\rho}{2}{||{\bm w} - {\bm z}||}_{2}^{2} \nonumber \\
- &= \frac{1}{2} {||{\bf y} - {\bm X}^{T}{\bm w}||}_{2}^{2} + \lambda {||{\bm z}||}_{1} + \frac{\rho}{2}{||{\bm w} - {\bm z}||}_{2}^{2} \nonumber \\
+{\mathcal P}({\bf x}, {\bf z}, \rho) &= {\rm Loss}({\bf w}, {\bf z}) + \frac{\rho}{2}{||{\bf w} - {\bf z}||}_{2}^{2} \nonumber \\
+ &= \frac{1}{2} {||{\bf y} - {\bf X}^{T}{\bf w}||}_{2}^{2} + \lambda {||{\bf z}||}_{1} + \frac{\rho}{2}{||{\bf w} - {\bf z}||}_{2}^{2} \nonumber \\
 \end{align}
 $$
 
@@ -66,47 +66,47 @@ The method is an approach that combines the flexibility of the penalty and the r
 
 $$
 \begin{align}
-J({\bm w}, {\bm z}, {\bm \gamma}) &= {\rm Loss}({\bm w}, {\bm z}) + {\bm {\gamma}}^{T}({\bm w} - {\bm z}) + \frac{\rho}{2}{||{\bm w} - {\bm z}||}_{2}^{2} \nonumber \\
-&= \frac{1}{2} {||{\bf y} - {\bm X}^{T}{\bm w}||}_{2}^{2} + \lambda {||{\bm z}||}_{1} + {\bm {\gamma}}^{T}({\bm w} - {\bm z}) + \frac{\rho}{2}{||{\bm w} - {\bm z}||}_{2}^{2} \nonumber \\
+J({\bf w}, {\bf z}, {\bf \gamma}) &= {\rm Loss}({\bf w}, {\bf z}) + {\bf {\gamma}}^{T}({\bf w} - {\bf z}) + \frac{\rho}{2}{||{\bf w} - {\bf z}||}_{2}^{2} \nonumber \\
+&= \frac{1}{2} {||{\bf y} - {\bf X}^{T}{\bf w}||}_{2}^{2} + \lambda {||{\bf z}||}_{1} + {\bf {\gamma}}^{T}({\bf w} - {\bf z}) + \frac{\rho}{2}{||{\bf w} - {\bf z}||}_{2}^{2} \nonumber \\
 \end{align}
 $$
 
-In this method, ${\bm w}, {\bm z}$ and ${\bm \gamma}$ are updated iteratively:
+In this method, ${\bf w}, {\bf z}$ and ${\bf \gamma}$ are updated iteratively:
 
 $$
-{\bm w}^{(0)} = {\bm 0},\quad {\bm z}^{(0)} = {\bm 0},\quad {\bm \gamma}^{(0)} = {\bm 0} \\
+{\bf w}^{(0)} = {\bf 0},\quad {\bf z}^{(0)} = {\bf 0},\quad {\bf \gamma}^{(0)} = {\bf 0} \\
 \begin{align}
-{\bm w}^{(t+1)} &= \underset{\bm w}{{\rm argmin}} J({\bm w}^{(t)}, {\bm z}^{(t)}, {\bm \gamma}^{(t)}) \nonumber \\
-{\bm z}^{(t+1)} &= \underset{\bm z}{{\rm argmin}} J({\bm w}^{(t)}, {\bm z}^{(t)}, {\bm \gamma}^{(t)}) \nonumber \\
-{\bm \gamma}^{(t+1)} &= {\bm \gamma}^{(t)} + \rho ({\bm w}^{(t)} - {\bm z}^{(t)}) \nonumber \\
+{\bf w}^{(t+1)} &= \underset{\bf w}{{\rm argmin}} J({\bf w}^{(t)}, {\bf z}^{(t)}, {\bf \gamma}^{(t)}) \nonumber \\
+{\bf z}^{(t+1)} &= \underset{\bf z}{{\rm argmin}} J({\bf w}^{(t)}, {\bf z}^{(t)}, {\bf \gamma}^{(t)}) \nonumber \\
+{\bf \gamma}^{(t+1)} &= {\bf \gamma}^{(t)} + \rho ({\bf w}^{(t)} - {\bf z}^{(t)}) \nonumber \\
 \end{align}
 $$
 
-where ${\bm w}^{(t)}, {\bm z}^{(t)}$ and ${\bm \gamma}^{(t)}$ are parameters at timestep $t$. Its convergence criterion consists of the following two conditions:
+where ${\bf w}^{(t)}, {\bf z}^{(t)}$ and ${\bf \gamma}^{(t)}$ are parameters at timestep $t$. Its convergence criterion consists of the following two conditions:
 
 $$
 \begin{align}
-{\rm primary} &: {\bm w} - {\bm z} = {\bm 0} \nonumber \\
-{\rm secondary} &: {\bm w}^{(t+1)} = {\bm w}^{(t)}, \quad {\bm z}^{(t+1)} = {\bm z}^{(t)} \nonumber \\
+{\rm primary} &: {\bf w} - {\bf z} = {\bf 0} \nonumber \\
+{\rm secondary} &: {\bf w}^{(t+1)} = {\bf w}^{(t)}, \quad {\bf z}^{(t+1)} = {\bf z}^{(t)} \nonumber \\
 \end{align}
 $$
 
 The primary condition is literally the constraint, while the secondary one wants parameters to converge.
 
-Let us zoom at the rule of update. Like the original Lagrange multiplier, we determine ${\bm w}^{(t+1)}$ by partial derivatives:
+Let us zoom at the rule of update. Like the original Lagrange multiplier, we determine ${\bf w}^{(t+1)}$ by partial derivatives:
 
 $$
-\frac{\partial J}{\partial {\bm w}} = -{\bm X}({\bm y} - {\bm X}^T {\bm w}^{(t)}) + {\bm \gamma}^{(t)} + {\bm \rho}({\bm w}^{(t)} - {\bm z}^{(t)}) = 0 \\
-\therefore{\bm w}^{(t+1)} = {({\bm X}{\bm X}^{T} + \rho {\bm I})}^{-1} ({\bm X}{\bm y} - {\bm \gamma}^{(t)} + \rho {\bm z}^{(t)})
+\frac{\partial J}{\partial {\bf w}} = -{\bf X}({\bf y} - {\bf X}^T {\bf w}^{(t)}) + {\bf \gamma}^{(t)} + {\bf \rho}({\bf w}^{(t)} - {\bf z}^{(t)}) = 0 \\
+\therefore{\bf w}^{(t+1)} = {({\bf X}{\bf X}^{T} + \rho {\bf I})}^{-1} ({\bf X}{\bf y} - {\bf \gamma}^{(t)} + \rho {\bf z}^{(t)})
 $$
 
-The function is non-differentiable with respect to ${\bm z}$ because of ${||{\bm z}||}_{1}$, but we can solve the problem analytically by dealing with each element of it. That is, we rewrite the function as:
+The function is non-differentiable with respect to ${\bf z}$ because of ${||{\bf z}||}_{1}$, but we can solve the problem analytically by dealing with each element of it. That is, we rewrite the function as:
 
 $$
-J({\bm w}^{(t)}, (z_{1}, z_{2}, ..., z_{l}, ..., z_{d}), {\bm \gamma}^{(t)}) = \sum_{l=1}^{d} (\frac{\rho}{2} {(z_{l} - {w}_{l}^{(t)})}^{2} + {\lambda}|z_{l}| - {\gamma}_{l} z_{l}) + {\rm Const.}
+J({\bf w}^{(t)}, (z_{1}, z_{2}, ..., z_{l}, ..., z_{d}), {\bf \gamma}^{(t)}) = \sum_{l=1}^{d} (\frac{\rho}{2} {(z_{l} - {w}_{l}^{(t)})}^{2} + {\lambda}|z_{l}| - {\gamma}_{l} z_{l}) + {\rm Const.}
 $$
 
-where we consider terms not including ${\bm z}$ as constant values. Here, we can take derivatives with respect of $z_{l}$. We consider different cases of the derivative based on the sign of $z_{l}$:
+where we consider terms not including ${\bf z}$ as constant values. Here, we can take derivatives with respect of $z_{l}$. We consider different cases of the derivative based on the sign of $z_{l}$:
 
 $$
 \frac{\partial J}{\partial z_{l}} =
@@ -166,20 +166,20 @@ $$
 {\hat z}_{l}^{(t+1)} = S_{\frac{\lambda}{\rho}} (w_{l}^{(t)} + \frac{1}{\rho} {\gamma}_{l})
 $$
 
-In the case of ${\bm \gamma}$, the update rule has been already shown as:
+In the case of ${\bf \gamma}$, the update rule has been already shown as:
 
 $$
-{\bm \gamma}^{(t+1)} = {\bm \gamma}^{(t)} + \rho ({\bm w}^{(t)} - {\bm z}^{(t)})
+{\bf \gamma}^{(t+1)} = {\bf \gamma}^{(t)} + \rho ({\bf w}^{(t)} - {\bf z}^{(t)})
 $$
 
-What it means? The penalty method increases the penalty term $\frac{\rho}{2}{||{\bm w} - {\bm z}||}_{2}^{2}$, intending to optimize the parameters. This method adopts <span style="color: red; ">the gradient ascent algorithm</span> and the above is its formula.
+What it means? The penalty method increases the penalty term $\frac{\rho}{2}{||{\bf w} - {\bf z}||}_{2}^{2}$, intending to optimize the parameters. This method adopts <span style="color: red; ">the gradient ascent algorithm</span> and the above is its formula.
 
 ## 4. Summary
 
 <span style="color: red; ">Lasso regression</span> uses the loss function:
 
 $$
-{\rm Loss}({\bm w}) = \frac{1}{2} {||{\bf y} - {\bm X}^{T}{\bm w}||}_{2}^{2} + \lambda {||{\bm w}||}_{1}
+{\rm Loss}({\bf w}) = \frac{1}{2} {||{\bf y} - {\bf X}^{T}{\bf w}||}_{2}^{2} + \lambda {||{\bf w}||}_{1}
 $$
 
 to make as many elements of ${\bf w}$ as possible equal to zero but it is non-differentiable. One of the solution is <span style="color: red; ">The Augmented Lagrangian Method</span>, which inherits both of the property of Lagrange multiplier method and penalty method.
@@ -188,19 +188,19 @@ In this method, the loss function is renewed as:
 
 $$
 \begin{align}
-J({\bm w}, {\bm z}, {\bm \gamma}) &= {\rm Loss}({\bm w}, {\bm z}) + {\bm {\gamma}}^{T}({\bm w} - {\bm z}) + \frac{\rho}{2}{||{\bm w} - {\bm z}||}_{2}^{2} \nonumber \\
-&= \frac{1}{2} {||{\bf y} - {\bm X}^{T}{\bm w}||}_{2}^{2} + \lambda {||{\bm z}||}_{1} + {\bm {\gamma}}^{T}({\bm w} - {\bm z}) + \frac{\rho}{2}{||{\bm w} - {\bm z}||}_{2}^{2} \nonumber \\
+J({\bf w}, {\bf z}, {\bf \gamma}) &= {\rm Loss}({\bf w}, {\bf z}) + {\bf {\gamma}}^{T}({\bf w} - {\bf z}) + \frac{\rho}{2}{||{\bf w} - {\bf z}||}_{2}^{2} \nonumber \\
+&= \frac{1}{2} {||{\bf y} - {\bf X}^{T}{\bf w}||}_{2}^{2} + \lambda {||{\bf z}||}_{1} + {\bf {\gamma}}^{T}({\bf w} - {\bf z}) + \frac{\rho}{2}{||{\bf w} - {\bf z}||}_{2}^{2} \nonumber \\
 \end{align}
 $$
 
 and each parameter is updated incrementally under the update rule:
 
 $$
-{\bm w}^{(0)} = {\bm 0},\quad {\bm z}^{(0)} = {\bm 0},\quad {\bm \gamma}^{(0)} = {\bm 0} \\
+{\bf w}^{(0)} = {\bf 0},\quad {\bf z}^{(0)} = {\bf 0},\quad {\bf \gamma}^{(0)} = {\bf 0} \\
 \begin{align}
-{\bm w}^{(t+1)} &= {({\bm X}{\bm X}^{T} + \rho {\bm I})}^{-1} ({\bm X}{\bm y} - {\bm \gamma}^{(t)} + \rho {\bm z}^{(t)}) \nonumber \\
+{\bf w}^{(t+1)} &= {({\bf X}{\bf X}^{T} + \rho {\bf I})}^{-1} ({\bf X}{\bf y} - {\bf \gamma}^{(t)} + \rho {\bf z}^{(t)}) \nonumber \\
 {\hat z}^{(t+1)} &= S_{\frac{\lambda}{\rho}} (w^{(t)} + \frac{1}{\rho} {\gamma}) \nonumber \\
-{\bm \gamma}^{(t+1)} &= {\bm \gamma}^{(t)} + \rho ({\bm w}^{(t)} - {\bm z}^{(t)}) \nonumber \\
+{\bf \gamma}^{(t+1)} &= {\bf \gamma}^{(t)} + \rho ({\bf w}^{(t)} - {\bf z}^{(t)}) \nonumber \\
 \end{align}
 $$
 
@@ -214,7 +214,7 @@ If the following two conditions are satisfied, it will stop iteration:
 
 $$
 \begin{align}
-{\rm primary} &: {\bm w} - {\bm z} = {\bm 0} \nonumber \\
-{\rm secondary} &: {\bm w}^{(t+1)} = {\bm w}^{(t)}, \quad {\bm z}^{(t+1)} = {\bm z}^{(t)} \nonumber \\
+{\rm primary} &: {\bf w} - {\bf z} = {\bf 0} \nonumber \\
+{\rm secondary} &: {\bf w}^{(t+1)} = {\bf w}^{(t)}, \quad {\bf z}^{(t+1)} = {\bf z}^{(t)} \nonumber \\
 \end{align}
 $$
