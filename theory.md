@@ -231,3 +231,9 @@ $$
 {\rm secondary} &: {\bf w}^{(t+1)} = {\bf w}^{(t)}, \quad {\bf z}^{(t+1)} = {\bf z}^{(t)} \nonumber \\
 \end{align}
 $$
+
+## 5.Reference
+
+- https://qiita.com/s-capybara/items/48e2829ae7c1d402bff8
+- https://www.physics.okayama-u.ac.jp/~otsuki/lecture/ynu2021/ynu_13.pdf
+- https://www.jstage.jst.go.jp/article/jscswabun/30/2/30_173/_pdf
